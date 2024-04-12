@@ -93,8 +93,12 @@ int main()
 
 void levelOrderTraversal(BSTNode* root)
 {
-
-    /* add your code here */
+	
+	printf("%d ", root->item);
+	if(root->right != NULL)
+		levelOrderTraversal(root->right);
+	if(root->left != NULL)
+	levelOrderTraversal(root->left);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
