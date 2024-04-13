@@ -99,7 +99,6 @@ void PtrSwap(ListNode **Head, ListNode *curNode, ListNode *endNode)
 	if (endNode->next == NULL)
 	{
 		endNode->next = curNode;
-		
 		curNode->next = NULL;
 	}
 	else
