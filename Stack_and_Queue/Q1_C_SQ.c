@@ -136,6 +136,7 @@ void removeOddValues(Queue *q)
 {
 	ListNode *cur = q->ll.head;
 	ListNode *temp = q->ll.head;
+	ListNode *rmNode = q->ll.head;
 	while (cur->next != NULL)
 	{
 		if (cur->item % 2 != 0)
@@ -143,13 +144,17 @@ void removeOddValues(Queue *q)
 			if (cur == q->ll.head)
 			{
 				temp = cur;
+				rmNode = cur;
 				q->ll.head = q->ll.head->next;
 				cur = q->ll.head;
+				free(rmNode);
 			}
 			else
 			{
-				temp = cur;
+				rmNode = cur;
+				temp->next = cur->next;
 				cur = cur->next;
+				free(rmNode);
 			}
 		}
 		else
@@ -161,6 +166,7 @@ void removeOddValues(Queue *q)
 	if (cur->item % 2 != 0)
 	{
 		temp->next = NULL;
+		free(cur);
 	}
 }
 
