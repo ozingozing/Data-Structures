@@ -104,7 +104,27 @@ int main()
 ////////////////////////////////////////////////////////////
 int balanced(char *expression)
 {
-/* add your code here */
+	Stack *s = malloc(sizeof(Stack));
+	int num = 0;
+	char *arr[sizeof(expression)/sizeof(*expression)] = {};
+	for(int i = 0; i < sizeof(expression)/sizeof(*expression) / 2 - 1; i++)
+	{
+		arr[num] = expression[i];
+		num++;
+		push(s, expression[i]);
+	}
+	for(int i = 0; i < sizeof(expression)/sizeof(*expression) / 2 - 1; i++)
+	{
+		num += 1;
+		arr[num] = pop(s);
+	}
+	
+	for(int i = 0; i < s->ll.size; i++)
+	{
+		if(arr[i] == expression[i])continue;
+		else return 0;
+	}
+	return 1;
 }
 
 ////////////////////////////////////////////////////////////
