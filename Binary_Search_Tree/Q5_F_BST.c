@@ -47,7 +47,7 @@ BSTNode *removeNodeFromTree(BSTNode *root, int value);
 
 int main()
 {
-	int c, i;
+	int c, i, n;
 	c = 1;
 
 	// Initialize the Binary Search Tree as an empty Binary Search Tree
@@ -60,7 +60,7 @@ int main()
 
 	while (c != 0)
 	{
-		printf("Please input your choice(1/2/0): ");
+		printf("Please input your choice(1/2/3/0): ");
 		scanf("%d", &c);
 
 		switch (c)
@@ -73,6 +73,13 @@ int main()
 		case 2:
 			printf("The resulting post-order traversal of the binary search tree is: ");
 			postOrderIterativeS2(root); // You need to code this function
+			printf("\n");
+			break;
+		case 3:
+			printf("delete Node Item: ");
+			scanf("%d", &n);
+			removeNodeFromTree(root, n);
+			postOrderIterativeS2(root);
 			printf("\n");
 			break;
 		case 0:
@@ -91,49 +98,82 @@ int main()
 
 void postOrderIterativeS2(BSTNode *root)
 {
+	if (root == NULL)
+	{
+		printf("root is Empty!!!!\n");
+		return;
+	}
 	Stack s;
 	s.top = NULL;
-	push(&s, root);
 	BSTNode *temp = root;
-	while ((temp) != NULL)
+	do
 	{
-		if (temp->right != NULL)
-			push(&s, temp->right);
-		if (temp->left != NULL)
-			push(&s, temp->left);
-		temp = s.top->data;
-		if (temp->left == NULL && temp->right == NULL)
-			break;
-	}
-	while (1)
-	{
-		if (s.top->data == root->right)
-			break;
-		printf("%d ", pop(&s)->item);
-	}
-	while ((temp) != NULL)
-	{
-		if (temp->right != NULL)
-			push(&s, temp->right);
-		if (temp->left != NULL)
-			push(&s, temp->left);
-		temp = s.top->data;
-		if (temp->left == NULL && temp->right == NULL)
-			break;
-	}
-	while (s.top != NULL)
-	{
-		printf("%d ", pop(&s)->item);
-	}
+		while (temp != NULL)
+		{
+			if (temp->right != NULL)
+				push(&s, temp->right);
+			push(&s, temp);
+			temp = temp->left;
+		}
+
+		temp = pop(&s);
+
+		if (temp->right != NULL && peek(&s) == temp->right)
+		{
+			pop(&s);
+			push(&s, temp);
+			temp = temp->right;
+		}
+		else
+		{
+			if(temp != NULL)
+				printf("%d ", temp->item);
+			temp = NULL;
+		}
+	} while (!isEmpty(&s));
 }
 
 /* Given a binary search tree and a key, this function
    deletes the key and returns the new root. Make recursive function. */
 BSTNode *removeNodeFromTree(BSTNode *root, int value)
 {
-	/* add your code here */
+	if (root == NULL)
+		return root;
+
+	if (value < root->item)
+		root->left = removeNodeFromTree(root->left, value);
+	else if (value > root->item)
+		root->right = removeNodeFromTree(root->right, value);
+	else
+	{
+		if (root->left == NULL)
+		{
+			BSTNode *temp = root->right;
+			free(root);
+			return temp;
+		}
+		else if (root->right == NULL)
+		{
+			BSTNode *temp = root->left;
+			free(root);
+			return temp;
+		}
+
+		BSTNode *cur = root->right;
+		while (cur != NULL && cur->left != NULL)
+		{
+			cur = cur->left;
+		}
+		root->item = cur->item;
+
+		root->right = removeNodeFromTree(root->right, cur->item);
+	}
+
+	return root;
 }
-///////////////////////////////////////////////////////////////////////////////
+
+
+
 
 void insertBSTNode(BSTNode **node, int value)
 {

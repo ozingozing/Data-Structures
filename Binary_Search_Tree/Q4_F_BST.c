@@ -91,51 +91,38 @@ int main()
 
 void postOrderIterativeS1(BSTNode *root)
 {
+	if (root == NULL)
+	{
+		printf("root is Empty!!!!\n");
+		return;
+	}
 	Stack s;
 	s.top = NULL;
-	push(&s, root);
 	BSTNode *temp = root;
-	int rightNodeCheck = 0;
-	while ((temp) != NULL)
+	do
 	{
-		if (temp->right != NULL)
-			push(&s, temp->right);
-		if (temp->left != NULL)
-			push(&s, temp->left);
-		temp = s.top->data;
-		if(temp->left == NULL && temp->right == NULL && rightNodeCheck == 1)
+		while (temp != NULL)
 		{
-			while (s.top != NULL)
-			{
-				printf("%d ", pop(&s)->item);
-			}
-			break;
+			if(temp->right != NULL)
+				push(&s, temp->right);
+			push(&s, temp);
+			temp = temp->left;
 		}
-		if (temp->left == NULL && temp->right == NULL)
+
+		temp = pop(&s);
+
+		if(temp->right != NULL && peek(&s) == temp->right)
 		{
-			while (s.top->data != root->right)
-			{
-				printf("%d ", pop(&s)->item);
-			}
-			rightNodeCheck = 1;
+			pop(&s);
+			push(&s, temp);
+			temp = temp->right;
 		}
-	}
-	/*
-	while ((temp) != NULL)
-	{
-		if (temp->right != NULL)
-			push(&s, temp->right);
-		if (temp->left != NULL)
-			push(&s, temp->left);
-		temp = s.top->data;
-		if (temp->left == NULL && temp->right == NULL)
-			break;
-	}
-	while (s.top != NULL)
-	{
-		printf("%d ", pop(&s)->item);
-	}
-	*/
+		else
+		{
+			printf("%d ", temp->item);
+			temp = NULL;
+		}
+	}while (!isEmpty(&s));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
