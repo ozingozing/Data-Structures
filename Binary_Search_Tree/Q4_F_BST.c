@@ -95,6 +95,7 @@ void postOrderIterativeS1(BSTNode *root)
 	s.top = NULL;
 	push(&s, root);
 	BSTNode *temp = root;
+	int rightNodeCheck = 0;
 	while ((temp) != NULL)
 	{
 		if (temp->right != NULL)
@@ -102,13 +103,24 @@ void postOrderIterativeS1(BSTNode *root)
 		if (temp->left != NULL)
 			push(&s, temp->left);
 		temp = s.top->data;
-		if(temp->left == NULL && temp->right == NULL) break;
+		if(temp->left == NULL && temp->right == NULL && rightNodeCheck == 1)
+		{
+			while (s.top != NULL)
+			{
+				printf("%d ", pop(&s)->item);
+			}
+			break;
+		}
+		if (temp->left == NULL && temp->right == NULL)
+		{
+			while (s.top->data != root->right)
+			{
+				printf("%d ", pop(&s)->item);
+			}
+			rightNodeCheck = 1;
+		}
 	}
-	while (1)
-	{
-		if(s.top->data == root->right)break;
-		printf("%d ", pop(&s)->item);
-	}
+	/*
 	while ((temp) != NULL)
 	{
 		if (temp->right != NULL)
@@ -116,13 +128,14 @@ void postOrderIterativeS1(BSTNode *root)
 		if (temp->left != NULL)
 			push(&s, temp->left);
 		temp = s.top->data;
-		if(temp->left == NULL && temp->right == NULL) break;
+		if (temp->left == NULL && temp->right == NULL)
+			break;
 	}
 	while (s.top != NULL)
 	{
 		printf("%d ", pop(&s)->item);
 	}
-	
+	*/
 }
 
 ///////////////////////////////////////////////////////////////////////////////
