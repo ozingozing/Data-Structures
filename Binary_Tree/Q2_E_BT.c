@@ -102,10 +102,12 @@ int Max(int a, int b)
 int maxHeight(BTNode *node)
 {
     int h = 0;
-    if(node != NULL)
-        h = 1 + Max(maxHeight(node->left), maxHeight(node->right));
-    else h -= 1;
-    return h;
+    int h2 = 0;
+    if(node->left != NULL)
+        h = 1 + maxHeight(node->left);
+    if(node->right != NULL)
+        h2 = 1 + maxHeight(node->right);
+    return Max(h, h2);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
